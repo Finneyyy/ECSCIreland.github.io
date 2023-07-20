@@ -4,12 +4,13 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+The top Irish CTF team 😎
 
 ### More Information
 
+[CTFTime](https://ctftime.org/team/179144)
 A place to include any other types of information that you'd like to include about yourself.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[@LooseSecurity](https://twitter.com/LooseSecurity) on Twitter
