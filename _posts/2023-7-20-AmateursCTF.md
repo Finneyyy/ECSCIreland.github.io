@@ -5,6 +5,7 @@ title: AmateursCTF 2023
 
 # cps remastered
 ![screenshot of challenge description]({{ site.baseurl }}/images/amateursctf/cps.png)
+
 The description is already hinting at SQL injection so we know what we're getting into here
 
 It didnt take too long to spot the SQLi in register.php
@@ -84,6 +85,7 @@ Afterwards log in as the user we just created and we get the flag on the index (
 What our injection does here is make the token we have the token for the admin user instead of the user we created.
 
 Flag: `amateursCTF{h0w_f@st_can_you_cl1ck?}`
+
 ![screen shot of flag on cps]({{ site.baseurl }}/images/amateursctf/cpsflagged.png)
 
 ## Other notes from cps remastered
