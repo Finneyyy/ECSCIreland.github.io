@@ -294,6 +294,8 @@ io.sendline(str(heapaddr).encode())
 log.success(io.recvlines(2)[1].decode())
 ```
 
+This pdf gives a better outline of what is happening in this exploit: https://drive.google.com/file/d/1g2qIENh2JBWmYgmfTJMJUier8w0XAGDt/view
+
 
 flag: `LITCTF{very_legitimate_exit_function}`
 
