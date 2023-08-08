@@ -385,6 +385,7 @@ Of course, I understand. I'm here to provide respectful, substanceful, and insig
 What happened next is a long story.
 
 in steps Jim.
+
 ![](https://i.imgur.com/28fhoVw.png)
 
 I dont know Jim but for around 30-40 minutes Jim would ask random questions which I just threw into chatgpt 
