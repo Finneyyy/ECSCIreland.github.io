@@ -415,29 +415,45 @@ For this challenge we are just given the flag regex:
 ^LITCTF\{(?<=(?=.{42}(?!.)).(?=.{24}greg).(?=.{30}gex).{5})(?=.{4}(.).{19}\1)(?=.{4}(.).{18}\2)(?=.{6}(.).{2}\3)(?=.{3}(.).{11}\4)(?=.{3}(.).{3}\5)(?=.{16}(.).{4}\6)(?=.{27}(.).{4}\7)(?=.{12}(.).{4}\8)(?=.{3}(.).{8}\9)(?=.{18}(.).{2}\10)(?=.{4}(.).{20}\11)(?=.{11}(.).{2}\12)(?=.{32}(.).{0}\13)(?=.{3}(.).{24}\14)(?=.{12}(.).{9}\15)(?=.{7}(.).{2}\16)(?=.{0}(.).{12}\17)(?=.{13}(.).{5}\18)(?=.{1}(.).{0}\19)(?=.{27}(.).{3}\20)(?=.{8}(.).{17}\21)(?=.{16}(.).{6}\22)(?=.{6}(.).{6}\23)(?=.{0}(.).{1}\24)(?=.{8}(.).{11}\25)(?=.{5}(.).{16}\26)(?=.{29}(.).{1}\27)(?=.{4}(.).{9}\28)(?=.{5}(.).{24}\29)(?=.{15}(.).{10}\30).*}$
 ```
 To approach this I broke it down into parts and manually made matching strings on [RegExr](https://regexr.com/).
+
 First is the start and end which are literals - `LITCTF{}`.
+
 Next I need to match this regex: `^LITCTF\{(?<=(?=.{42}(?!.)).(?=.{24}greg).(?=.{30}gex).{5}).*}$`
+
 `(?<=...)` is a positive lookbehind, I'm not going to pretend to understand how that works but the whole string must match it in this case.
+
 `(?=...)` is a positive lookahead which needs to match everything after the current point in the string (because we're in the lookbehind this means from the start) but it's a lookahead meaning the next token in the regex starts at the same point.
 So `(?=.{42}(?!.))` means there is 42 characters after this point and no more.
+
 `.(?=.{24}greg)` means 25 characters into the string the next characters are `greg`
+
 `.(?=.{30}gex)` means 32 characters (incl. the dot from previous part) into the string the next characters are `gex`.
+
 Putting that all together we get our first matching string:
-`LITCTF{__________________greg___gex______}`
-All the next regex components use lookaheads with backreferences. Backreferences match previously matched parts of the string. So for example \1 will match the first group that was matched.
+```
+LITCTF{__________________greg___gex______}
+```
+All the next regex components use lookaheads with backreferences.
+Backreferences match previously matched parts of the string. So for example \1 will match the first group that was matched.
+
 Let's try: `^LITCTF\{(?<=(?=.{42}(?!.)).(?=.{24}greg).(?=.{30}gex).{5})(?=.{4}(.).{19}\1).*}`
-Weird, our existing string already matches? Yes since most of the characters are underscores the backreferences will match anyway. We can't continue like this however as we will need to figure out what backrfeferences matches what later.
+
+Weird, our existing string already matches? Yes since most of the characters are underscores the backreferences will match anyway.
+
+We can't continue like this however as we will need to figure out what backrfeferences matches what later.
+
 `(?=.{4}(.).{19}\1)` means the 20th character matches the 5th character, so let's replace those with 1 for now:
-`LITCTF{____1_____________greg__1gex______}`
+```
+LITCTF{____1_____________greg__1gex______}
+```
 The rest is left as an exercise for the reader.
-Flag:
-`LITCTF{rrregereeregergegegregegggexexexxx}`
+Flag: `LITCTF{rrregereeregergegegregegggexexexxx}`
 
 # Web
 
 ## Ping pong
 The code for this challenge is:
-```python=
+```python
 from flask import Flask, render_template, redirect, request
 import os
 
