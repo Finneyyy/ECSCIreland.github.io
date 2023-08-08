@@ -413,7 +413,7 @@ Where am I? The flag is LITCTF{latitude,longtitude} rounded to the third decimal
 
 ---
 
-All I had to go off for this challenge was this image: ![geoguessr](https://imgur.com/a/POA10Z7)
+All I had to go off for this challenge was this image: ![geoguessr.png](https://i.imgur.com/TnFE8TF.png)
 
 Going off the challenge name and description, I figured that I needed to find the location that the image was taken. Checking the metadata of the image yielded no results, so to google maps we go!
 
