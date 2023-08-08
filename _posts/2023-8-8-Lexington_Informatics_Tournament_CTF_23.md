@@ -408,6 +408,28 @@ After close to 40 minutes I got the flag. Only the person in first gets the flag
 
 flag: `LITCTF{Huh_1_gu3s5_u_R34lly_c4n_t4lk_4ft3ral1}`
 
+## geoguessr
+Where am I? The flag is LITCTF{latitude,longtitude} rounded to the third decimal place. (Example: LITCTF{42.444,-71.230})
+
+---
+
+All I had to go off for this challenge was this image: ![geoguessr](https://imgur.com/a/POA10Z7)
+
+Going off the challenge name and description, I figured that I needed to find the location that the image was taken. Checking the metadata of the image yielded no results, so to google maps we go!
+
+First, I had a good look at the image. I noticed that the cars were driving on the right hand side of the road, and there was a speed limit sign that said 55. I immediately thought of America. Further searching of the image, I saw the blue signs on the right of the image, which confirmed to me that it was the USA.
+
+Zooming in on the image, I could just about make out that the top sign said 87, and the bottom sign was 28- (I wasn't sure whether the last number was a 1 or a 7). 
+
+I went down a rabbit hole for a little while, looking at different route 87's in the USA, and eventually found out that the blue signs meant it was an interstate.
+
+I put I-87 into google maps (other online maps are available :D) where it put me in New York, and made my way up the map until I noticed that it merged into the I-287 for a stretch. At this point, I went into street view and had the picture up as reference. 
+Looking at the background of the picture, I could faintly make out water lines, so I went over the Mario Cuomo bridge and went to the bend on the left (near South Nyack) until I matched what I saw on Google Maps with the original image.
+
+Using the description as a hint for the flag format, I rounded the last numbers to get the flag.
+
+flag: `LITCTF{41.077,-73.921}`
+
 # Rev
 
 ## iloveregex
