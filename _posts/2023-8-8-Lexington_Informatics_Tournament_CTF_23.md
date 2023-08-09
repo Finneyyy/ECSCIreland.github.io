@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Lexington Informatics Tournament CTF 2023
