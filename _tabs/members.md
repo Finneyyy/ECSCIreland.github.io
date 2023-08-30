@@ -33,6 +33,6 @@ NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
 }
 </style>
 
-| <img class="avatar" src="/images/m0z.jpg"/>  | <b>m0z</b> <i>(@LooseSecurity)</i> \| <a href="https://twitter.com/loosesecurity"><img class="icon" src="/images/twitter.png"/></a> <a href="https://www.linkedin.com/"><img class="icon" src="/images/linkedin.png"/></a> <a href="https://github.com/ECSCIreland"><img class="icon" src="/images/github.png"/></a> <a href="/"><img class="icon" src="/images/website.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web / 💣 Pwn / 🔄 Reversing  / ⛏️ Forensics / 🔑 Crypto / ❓ Misc | 
+| <img class="avatar" src="/images/m0z.jpg"/>  | <b>m0z</b> <i>(@LooseSecurity)</i> \| <a href="https://twitter.com/loosesecurity"><img class="icon" src="/images/twitter.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web / 💣 Pwn | 
 |||
 |||
