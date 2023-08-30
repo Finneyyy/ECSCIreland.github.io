@@ -52,7 +52,7 @@ build() {
   fi
 
   # build
-  JEKYLL_ENV=production bundle exec jekyll serve
+  JEKYLL_ENV=production bundle exec jekyll serve -d
 }
 
 test() {
