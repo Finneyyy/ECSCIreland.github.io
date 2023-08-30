@@ -34,5 +34,5 @@ NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
 </style>
 
 | <img class="avatar" src="/images/m0z.jpg"/>  | <b>m0z</b> <i>(@LooseSecurity)</i> \| <a href="https://twitter.com/loosesecurity"><img class="icon" src="/images/twitter.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web / 💣 Pwn | 
-|||
+| <img class="avatar" src="/images/12th.jpg"/>  | <b>12throckyou</b> <i>(@12throckyou)</i> \| <a href="https://twitter.com/12thonrockyou"><img class="icon" src="/images/twitter.png"/></a></a> <a href="https://github.com/12throckyou"><img class="icon" src="/images/github.png"/><br />Co-Founder / Coach<br /> <br />  💣 Pwn | 🕸️ Web | 
 |||
