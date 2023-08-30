@@ -8,7 +8,7 @@
 
 set -eu
 
-PAGES_BRANCH="gh-pages"
+PAGES_BRANCH="main"
 
 SITE_DIR="_site"
 
@@ -52,7 +52,7 @@ build() {
   fi
 
   # build
-  JEKYLL_ENV=production bundle exec jekyll serve -d "$SITE_DIR$_baseurl" --config "$_config"
+  JEKYLL_ENV=production bundle exec jekyll b -d "$SITE_DIR$_baseurl" --config "$_config"
 }
 
 test() {
