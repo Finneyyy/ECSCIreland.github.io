@@ -3,6 +3,7 @@ layout: page
 title: Members
 permalink: /members/
 description: Team Members
+order: 1
 ---
 
 <!--

@@ -70,7 +70,7 @@ We're given a pcapng file to analyse. From reading the requests we can see a few
 We can convert the pcapng to a pcap file by opening it in Wireshark and saving it. Now we can use [Network Miner](https://www.netresec.com/?page=NetworkMiner) to extract the image files that are being uploaded in it.
 ![network miner]({{ site.baseurl }}/images/thefewchosen/network_miner.png)
 
-The flag can be extracted by running zsteg on the third image (output_modified.png) or by uploading it to [AperiSolve](aperisolve.com). In this case however AperiSolve was inconsistent in showing the full ztego output with the flag.
+The flag can be extracted by running zsteg on the third image (output_modified.png) or by uploading it to [AperiSolve](https://aperisolve.com). In this case however AperiSolve was inconsistent in showing the full ztego output with the flag.
 
 Flag:
 ```
