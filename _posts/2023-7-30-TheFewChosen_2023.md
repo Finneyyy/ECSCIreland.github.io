@@ -215,9 +215,11 @@ The challenge has patched the previous issue but there is more to find.
 This time the flag is a hidden post so we can't see it just by visiting the URL because  hidden posts can only be seen by the user who uploaded them.
 We need to XSS the admin and get them to visit that page and send us the content.
 In the flask template for the posts page we see the following:
+{% raw %}
 ```
 <p> {{post.get('content') | safe}} </p>
 ```
+{% endraw %}
 The usage of "safe" here means that flask will not sanitize the post content which allows us to XSS
 So we make a new post with this as the post content:
 ```html
