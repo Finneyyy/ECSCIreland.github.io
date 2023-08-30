@@ -10,7 +10,9 @@ order: 1
 TEMPLATE, COPY AND ADD BELOW
 NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
 
-<img class="avatar" src="[PROFILE_PIC]"/> | <b>[REAL NAME]</b> <i>(@[CTF NAME])</i>  \| <a href="[TWITTER LINK]"><img class="icon" src="../assets/img/icons/twitter.png"/></a> <a href="[LINKEDIN LINK]"><img class="icon" src="../assets/img/icons/linkedin.png"/></a> <a href="[GITHUB LINK]"><img class="icon" src="../assets/img/icons/github.png"/></a> <a href="[PERSONAL WEBSITE]"><img class="icon" src="../assets/img/icons/website.png"/></a> <br /> [INTRODUCTION LINE 1] <br /> [INTRODUCTION LINE 2] <br />  <br /> [STAT 1] / [STAT 2]  / [STAT 3]  | 
+| <img class="avatar" src="/images/[AVATAR]"/>  | <b>[USERNAME]</b> <i>(@[HANDLE])</i> \| <a href="https://twitter.com/[HANDLE]"><img class="icon" src="/images/twitter.png"/></a> <a href="https://www.linkedin.com/[HANDLE]"><img class="icon" src="/images/linkedin.png"/></a> <a href="https://github.com/[HANDLE]"><img class="icon" src="/images/github.png"/></a> <a href="[WEBSITE]"><img class="icon" src="/images/website.png"/></a> <br />[ROLE]<br /> <br /> 🕸️ Web / 💣 Pwn / 🔄 Reversing  / ⛏️ Forensics / 🔑 Crypto / ❓ Misc | 
+|||
+|||
 -->
 
 <style>
