@@ -52,7 +52,7 @@ build() {
   fi
 
   # build
-  JEKYLL_ENV=production bundle exec jekyll serve -d
+  JEKYLL_ENV=production bundle exec jekyll serve -d "$SITE_DIR$_baseurl" --config "$_config"
 }
 
 test() {
