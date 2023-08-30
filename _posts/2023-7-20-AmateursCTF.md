@@ -1,6 +1,9 @@
 ---
 layout: post
 title: AmateursCTF 2023
+author: Protag
+categories: [Jeopardy]
+tags: [ctf,web,sqli]
 ---
 
 # cps remastered

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: TheFewChosen 2023
+author: Protag, 12thRockYou, m0z
+categories: [Jeopardy]
+tags: [ctf,crypto,web,pwn,reversing,forensics]
 ---
 
 # Crypto

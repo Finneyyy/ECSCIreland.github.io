@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Lexington Informatics Tournament CTF 2023
+author: 12thRockYou, m0z
+categories: [Jeopardy]
+tags: [ctf,attack-defence]
 ---
 
 # Pwn
