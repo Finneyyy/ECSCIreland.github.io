@@ -10,9 +10,7 @@ order: 1
 TEMPLATE, COPY AND ADD BELOW
 NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
 
-| <img class="avatar" src="/images/[AVATAR]"/>  | <b>[USERNAME]</b> <i>(@[HANDLE])</i> \| <a href="https://twitter.com/[HANDLE]"><img class="icon" src="/images/twitter.png"/></a> <a href="https://www.linkedin.com/[HANDLE]"><img class="icon" src="/images/linkedin.png"/></a> <a href="https://github.com/[HANDLE]"><img class="icon" src="/images/github.png"/></a> <a href="[WEBSITE]"><img class="icon" src="/images/website.png"/></a> <br />[ROLE]<br /> <br /> 🕸️ Web / 💣 Pwn / 🔄 Reversing  / ⛏️ Forensics / 🔑 Crypto / ❓ Misc | 
-|||
-|||
+| <img class="avatar" src="/images/[AVATAR]"/>  | <b>[USERNAME]</b> <i>(@[HANDLE])</i><br /> <a href="https://twitter.com/[HANDLE]"><img class="icon" src="/images/twitter.png"/></a> <a href="https://www.linkedin.com/[HANDLE]"><img class="icon" src="/images/linkedin.png"/></a> <a href="https://github.com/[HANDLE]"><img class="icon" src="/images/github.png"/></a> <a href="[WEBSITE]"><img class="icon" src="/images/website.png"/></a> <br />[ROLE]<br /> <br /> 🕸️ Web 💣 Pwn 🔄 Reversing  ⛏️ Forensics 🔑 Crypto ❓ Misc | 
 -->
 
 <style>
@@ -33,7 +31,7 @@ NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
 }
 </style>
 
-| <img class="avatar" src="/images/m0z.jpg"/>  | <b>m0z</b> <i>(@LooseSecurity)</i> \| <a href="https://twitter.com/loosesecurity"><img class="icon" src="/images/twitter.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web / 💣 Pwn | 
-| <img class="avatar" src="/images/12th.jpg"/> | <b>12throckyou</b> <i>(@12throckyou)</i> \| <a href="https://twitter.com/12thonrockyou"><img class="icon" src="/images/twitter.png"/></a> <a href="https://github.com/12throckyou"><img class="icon" src="/images/github.png"/></a><br />Co-Founder / Coach<br /><br />  💣 Pwn / 🕸️ Web | 
-| <img class="avatar" src="/images/0daystolive.png"/>  | <b>meme-lord</b> <i>(@0daystolive)</i> \| <a href="https://social.0daysto.live/users/0daystolive"><img class="icon" src="/images/twitter.png"/></a><a href="https://github.com/meme-lord"><img class="icon" src="/images/github.png"/></a> <a href="https://sorcery.ie"><img class="icon" src="/images/website.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web / ❓ Misc | 
+| <img class="avatar" src="/images/m0z.jpg"/>  | <b>m0z</b> <i>(@LooseSecurity)</i><br /> <a href="https://twitter.com/loosesecurity"><img class="icon" src="/images/twitter.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web 💣 Pwn | 
+| <img class="avatar" src="/images/12th.jpg"/> | <b>12throckyou</b> <i>(@12throckyou)</i><br /> <a href="https://twitter.com/12thonrockyou"><img class="icon" src="/images/twitter.png"/></a> <a href="https://github.com/12throckyou"><img class="icon" src="/images/github.png"/></a><br />Co-Founder / Coach<br /><br />  💣 Pwn 🕸️ Web | 
+| <img class="avatar" src="/images/0daystolive.png"/>  | <b>meme-lord</b> <i>(@0daystolive)</i><br /> <a href="https://social.0daysto.live/users/0daystolive"><img class="icon" src="/images/twitter.png"/></a> <a href="https://github.com/meme-lord"><img class="icon" src="/images/github.png"/></a> <a href="https://sorcery.ie"><img class="icon" src="/images/website.png"/></a> <br />Co-Founder<br /> <br /> 🕸️ Web ❓ Misc | 
 |||
