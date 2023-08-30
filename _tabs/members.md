@@ -21,6 +21,7 @@ NOTE: CHECK AND MAKE SURE IT DOESN'T OVERFLOW!
     max-height: 160px;
     border-radius: 100000000000000000px;
 }
+
 .icon {
     width: 20px;
     height: 20px;
